@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/raw/
+data/processed/
+data/train/
+data/val/
+data/test/
+outputs/
+experiments/
+*.pth
+*.pt
+*.ckpt

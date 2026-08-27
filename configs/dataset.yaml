@@ -1,0 +1,26 @@
+dataset:
+  name: WorldStrat
+
+input:
+  sensor: Sentinel-2
+  product: L2A
+  resolution_m: 10
+  bands:
+    - B02
+    - B03
+    - B04
+    - B08
+
+target:
+  sensor: SPOT-6/7
+  reference_resolution_m: 1.5
+  model_output_resolution_m: 2.5
+
+split:
+  train: official
+  validation: official
+  test: official
+
+quality:
+  max_temporal_difference_days: 30
+  require_geometric_alignment: true
