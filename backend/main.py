@@ -64,7 +64,14 @@ def disaster(q:Request): return {"scene":card(q.scene_id),"label":"DEMO ANALYSIS
 def change(q:Request): return {"scene":card(q.scene_id),"label":"DEMO ANALYSIS","workflow":["Scene A","Scene B","Co-registration","Difference map"],"result":"Potential change areas are illustrative; no operational affected-area claim is made.",**images(q.scene_id)}
 @app.post("/api/nemotron/analyze")
 def nemotron(q:Request):
- s=card(q.scene_id); return {"scene":s,"mode":"LIVE NEMOTRON" if os.getenv("NVIDIA_API_KEY") else "DEMO ANALYST","model":"NVIDIA Nemotron 3 Ultra","response":analyst(s,q.prompt)}
+ s=card(q.scene_id)
+ if os.getenv("NVIDIA_API_KEY"):
+  try:
+   from agent.nemotron import ask_nemotron
+   return {"scene":s,"mode":"LIVE NEMOTRON","model":"NVIDIA Nemotron 3 Ultra","response":ask_nemotron(q.prompt)}
+  except Exception:
+   pass
+ return {"scene":s,"mode":"DEMO ANALYST","model":"NVIDIA Nemotron 3 Ultra","response":analyst(s,q.prompt)}
 @app.post("/api/report")
 def report(q:Request):
  s=card(q.scene_id); return {"title":"TerraSR Scene Analysis Report","scene":s,"sections":["Scene","Input","Preprocessing","Super-Resolution","Validation","Uncertainty","Application","AI Analyst"],"markdown":f"# TerraSR Scene Analysis Report\n\n## Scene\n{s['name']} — {s['location']} ({s['mode']})\n\n## Input\n10 m Sentinel-2 L2A · B02/B03/B04/B08\n\n## Super-Resolution\nSub-4 m model-reconstructed target via a PROTOTYPE SR PREVIEW.\n\n## Status\nPrototype Demonstration. Production deployment requires trained model inference and independent high-resolution validation."}
