@@ -1,14 +1,64 @@
-.venv/
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
 .env
-data/raw/
-data/processed/
-data/train/
-data/val/
-data/test/
-outputs/
-experiments/
-*.pth
+.env.*
+!.env.example
+
+# Node
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Build/cache
+dist/
+build/
+.cache/
+.npm-cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python tooling
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Large ML artifacts
 *.pt
+*.pth
 *.ckpt
+*.safetensors
+*.onnx
+*.bin
+
+# Large datasets
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.parquet
+
+# Runtime outputs
+outputs/*
+!outputs/.gitkeep
+
+# Logs
+*.log
