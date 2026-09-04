@@ -1,139 +1,63 @@
 # 🌍 TerraSR
-### Multispectral Earth Observation Super-Resolution & AI Analysis Platform
+
+## Multispectral Earth Observation Super-Resolution & AI Analysis Platform
 
 <p align="center">
 
-<b>SIH 2026 • Problem Statement SIH26142</b>
+**SIH 2026 • Problem Statement SIH26142**
 
-</p>
-
-<p align="center">
-
-From medium-resolution satellite observations to
 <br>
-<strong>validated, uncertainty-aware, AI-assisted Earth Observation insights.</strong>
+
+<strong>
+From Medium-Resolution Satellite Imagery
+→
+Validated, Uncertainty-Aware Earth Observation Intelligence
+</strong>
+
+</p>
+
+<p align="center">
+
+`Sentinel-2` • `Multispectral SwinIR` • `PyTorch` • `FastAPI` • `React` • `Vite` • `NVIDIA Nemotron`
 
 </p>
 
 ---
 
-## 🚀 Overview
+<p align="center">
+  <img src="docs/images/dashboard.png" alt="TerraSR Dashboard" width="100%">
+</p>
 
-**TerraSR** is an end-to-end Earth Observation platform designed for
-**Deep Learning Based Super-Resolution Mapping (SRM) from Medium Resolution Satellite Imagery**.
-
-The core idea is simple:
-
-> Satellite imagery gives us large-area coverage, but many real-world decisions require finer spatial detail.
-
-TerraSR combines:
-
-- 🛰️ **Sentinel-2 multispectral Earth Observation data**
-- 🧠 **Transformer-based Super-Resolution using SwinIR architecture**
-- 🔬 **Spatial and spectral validation**
-- 🎯 **Uncertainty estimation**
-- 🌾 **Agricultural analysis**
-- 🏙️ **Urban monitoring**
-- 🌊 **Disaster assessment**
-- 🔄 **Change detection**
-- 🤖 **NVIDIA Nemotron-powered AI reasoning and reporting**
-
-into a single workflow.
+<p align="center">
+  <strong>TerraSR Judge-Ready Prototype</strong><br>
+  An end-to-end Earth Observation workflow from satellite scene acquisition to AI-assisted analysis.
+</p>
 
 ---
 
-# 💡 The Problem
+# 🚀 What is TerraSR?
 
-Medium-resolution satellite imagery is extremely valuable because it provides:
+**TerraSR** is a proposed end-to-end platform for **Deep Learning Based Super-Resolution Mapping (SRM) from Medium Resolution Satellite Imagery**.
 
-- Wide geographic coverage
-- Frequent observations
-- Multispectral information
-- Long-term temporal monitoring
-
-However, its spatial resolution can become a limitation for fine-scale analysis.
-
-For example, at **10 m spatial resolution**, one pixel represents approximately a:
-
-**10 m × 10 m ground area**
-
-This can make it difficult to distinguish:
-
-- Small buildings
-- Narrow roads
-- Field boundaries
-- Localized flood damage
-- Small urban structures
-- Fine-scale land-cover changes
-
-Traditional interpolation can make imagery look sharper, but it does not actually learn how real high-resolution structures are formed.
-
-### TerraSR addresses this through learned Super-Resolution.
-
----
-
-# 🧠 Our Core Idea
-
-Instead of treating Super-Resolution as simple image resizing, TerraSR is designed as a complete Earth Observation pipeline:
+The platform is designed to take medium-resolution multispectral satellite observations and move them through:
 
 ```text
-                SENTINEL-2
-                    │
-                    ▼
-          ┌───────────────────┐
-          │ Scene / AOI       │
-          │ Selection         │
-          └─────────┬─────────┘
-                    │
-                    ▼
-          ┌───────────────────┐
-          │ Quality Control   │
-          │ Cloud / Shadow    │
-          │ NoData / SCL      │
-          └─────────┬─────────┘
-                    │
-                    ▼
-          ┌───────────────────┐
-          │ Multispectral     │
-          │ Preprocessing     │
-          │ B02 B03 B04 B08   │
-          └─────────┬─────────┘
-                    │
-                    ▼
-       ┌────────────────────────────┐
-       │  Multispectral SwinIR      │
-       │  Transformer Super-        │
-       │  Resolution Reconstruction │
-       └─────────────┬──────────────┘
-                     │
-                     ▼
-          ┌───────────────────┐
-          │ Validation        │
-          │ PSNR / SSIM       │
-          │ RMSE / SAM / ERGAS│
-          └─────────┬─────────┘
-                    │
-                    ▼
-          ┌───────────────────┐
-          │ Uncertainty       │
-          │ Estimation        │
-          └─────────┬─────────┘
-                    │
-                    ▼
-      ┌──────────────────────────────┐
-      │ Earth Observation Analytics  │
-      │                              │
-      │ Agriculture                  │
-      │ Urban Monitoring             │
-      │ Disaster Assessment          │
-      │ Change Detection             │
-      └──────────────┬───────────────┘
-                     │
-                     ▼
-       ┌────────────────────────────┐
-       │ NVIDIA Nemotron             │
-       │ AI Reasoning & Orchestration│
-       └─────────────┬──────────────┘
-                     │
-                     ▼
-             AI Analyst Report
+Satellite Observation
+        ↓
+Scene / AOI Selection
+        ↓
+Quality Control
+        ↓
+Multispectral Preprocessing
+        ↓
+Super-Resolution Reconstruction
+        ↓
+Scientific Validation
+        ↓
+Uncertainty Estimation
+        ↓
+Earth Observation Applications
+        ↓
+NVIDIA Nemotron AI Analyst
+        ↓
+Actionable Report
