@@ -1,4 +1,4 @@
-﻿# 🌍 TerraSR
+# 🌍 TerraSR
 
 ### Multispectral Earth Observation Super-Resolution & AI Analysis Platform
 
@@ -90,7 +90,13 @@ Copernicus Sentinel-2 L2A (10 m BOA)
 ```
 
 <p align="center">
-  <img src="docs/images/architecture.png" alt="TerraSR System Architecture" width="100%">
+  <img src="docs/images/architecture.png"
+       alt="TerraSR Technical Approach and System Architecture"
+       width="100%">
+</p>
+
+<p align="center">
+  <strong>TerraSR Technical Approach — from Sentinel-2 acquisition to AI-assisted reporting.</strong>
 </p>
 
 ### ⚖️ Critical Role Separation: SwinIR vs. NVIDIA Nemotron
@@ -297,7 +303,6 @@ C:\SIH26142-SRM/
 ├── preprocessing/                 # Geospatial raster I/O & band alignment
 │   └── sentinel_loader.py         # Rasterio-based band reader & metadata extractor
 ├── scripts/                       # Operational diagnostics & asset utilities
-│   ├── generate_architecture_diagram.py # Architecture PNG generation utility
 │   └── smoke_test.py              # Automated 13-endpoint API smoke test
 ├── .env.example                   # Safe template for optional live credentials
 ├── .gitignore                     # Git exclusion rules (safeguarding models & secrets)
