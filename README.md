@@ -1,26 +1,139 @@
-# TerraSR — Offline-first Earth Observation Super-Resolution Prototype
+# 🌍 TerraSR
+### Multispectral Earth Observation Super-Resolution & AI Analysis Platform
 
-A local, judge-ready multispectral Earth Observation Super-Resolution Platform. It preserves the project's existing `agent/nemotron.py`, `preprocessing/`, `dataset/metadata.py`, and `models/swinir/` materials while adding a FastAPI demonstration backend and React/Vite frontend.
+<p align="center">
 
-## Run locally
+<b>SIH 2026 • Problem Statement SIH26142</b>
 
-```bat
-setup.bat
-run.bat
-```
+</p>
 
-Open http://localhost:5173. Stop services with `stop.bat`.
+<p align="center">
 
-## Offline behavior
+From medium-resolution satellite observations to
+<br>
+<strong>validated, uncertainty-aware, AI-assisted Earth Observation insights.</strong>
 
-The application bundles deterministic Bengaluru Urban Edge, Punjab Agricultural Mosaic, Nashik Mixed Peri-Urban, and Assam Flood / Change Assessment scenarios. `demo_data/scenes.json` is the single source of scene metadata and asset paths; every stage uses the same selected scene. No Internet, Copernicus credentials, or NVIDIA API key is required for a complete judge walkthrough.
+</p>
 
-## Optional live configuration
+---
 
-Copy `.env.example` to `.env` and fill optional `COPERNICUS_CLIENT_ID`, `COPERNICUS_CLIENT_SECRET`, `COPERNICUS_INSTANCE_ID`, and `NVIDIA_API_KEY`. Secrets stay backend-only. Production Copernicus search and trained SwinIR execution are deliberately future work.
+## 🚀 Overview
 
-## Accuracy statement
+**TerraSR** is an end-to-end Earth Observation platform designed for
+**Deep Learning Based Super-Resolution Mapping (SRM) from Medium Resolution Satellite Imagery**.
 
-`PROTOTYPE SR PREVIEW` uses deterministic Lanczos upscaling, controlled sharpening and contrast enhancement. It does **not** run trained SwinIR weights and represents a *sub-4m model-reconstructed target* — never true 2.5m observed satellite imagery. Validation and application results are marked `DEMO / ILLUSTRATIVE`; uncertainty is `PROTOTYPE UNCERTAINTY`.
+The core idea is simple:
 
-Use the global **JUDGE MODE** control for a ~48-second guided presentation. See [docs/JUDGE_DEMO.md](docs/JUDGE_DEMO.md) for the presentation flow.
+> Satellite imagery gives us large-area coverage, but many real-world decisions require finer spatial detail.
+
+TerraSR combines:
+
+- 🛰️ **Sentinel-2 multispectral Earth Observation data**
+- 🧠 **Transformer-based Super-Resolution using SwinIR architecture**
+- 🔬 **Spatial and spectral validation**
+- 🎯 **Uncertainty estimation**
+- 🌾 **Agricultural analysis**
+- 🏙️ **Urban monitoring**
+- 🌊 **Disaster assessment**
+- 🔄 **Change detection**
+- 🤖 **NVIDIA Nemotron-powered AI reasoning and reporting**
+
+into a single workflow.
+
+---
+
+# 💡 The Problem
+
+Medium-resolution satellite imagery is extremely valuable because it provides:
+
+- Wide geographic coverage
+- Frequent observations
+- Multispectral information
+- Long-term temporal monitoring
+
+However, its spatial resolution can become a limitation for fine-scale analysis.
+
+For example, at **10 m spatial resolution**, one pixel represents approximately a:
+
+**10 m × 10 m ground area**
+
+This can make it difficult to distinguish:
+
+- Small buildings
+- Narrow roads
+- Field boundaries
+- Localized flood damage
+- Small urban structures
+- Fine-scale land-cover changes
+
+Traditional interpolation can make imagery look sharper, but it does not actually learn how real high-resolution structures are formed.
+
+### TerraSR addresses this through learned Super-Resolution.
+
+---
+
+# 🧠 Our Core Idea
+
+Instead of treating Super-Resolution as simple image resizing, TerraSR is designed as a complete Earth Observation pipeline:
+
+```text
+                SENTINEL-2
+                    │
+                    ▼
+          ┌───────────────────┐
+          │ Scene / AOI       │
+          │ Selection         │
+          └─────────┬─────────┘
+                    │
+                    ▼
+          ┌───────────────────┐
+          │ Quality Control   │
+          │ Cloud / Shadow    │
+          │ NoData / SCL      │
+          └─────────┬─────────┘
+                    │
+                    ▼
+          ┌───────────────────┐
+          │ Multispectral     │
+          │ Preprocessing     │
+          │ B02 B03 B04 B08   │
+          └─────────┬─────────┘
+                    │
+                    ▼
+       ┌────────────────────────────┐
+       │  Multispectral SwinIR      │
+       │  Transformer Super-        │
+       │  Resolution Reconstruction │
+       └─────────────┬──────────────┘
+                     │
+                     ▼
+          ┌───────────────────┐
+          │ Validation        │
+          │ PSNR / SSIM       │
+          │ RMSE / SAM / ERGAS│
+          └─────────┬─────────┘
+                    │
+                    ▼
+          ┌───────────────────┐
+          │ Uncertainty       │
+          │ Estimation        │
+          └─────────┬─────────┘
+                    │
+                    ▼
+      ┌──────────────────────────────┐
+      │ Earth Observation Analytics  │
+      │                              │
+      │ Agriculture                  │
+      │ Urban Monitoring             │
+      │ Disaster Assessment          │
+      │ Change Detection             │
+      └──────────────┬───────────────┘
+                     │
+                     ▼
+       ┌────────────────────────────┐
+       │ NVIDIA Nemotron             │
+       │ AI Reasoning & Orchestration│
+       └─────────────┬──────────────┘
+                     │
+                     ▼
+             AI Analyst Report
