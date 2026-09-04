@@ -31,6 +31,9 @@ build/
 .cache/
 .npm-cache/
 frontend/.npm-cache/
+*.tsbuildinfo
+.vercel/
+frontend/.vercel/
 
 # IDE
 .vscode/

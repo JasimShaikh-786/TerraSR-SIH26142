@@ -11,7 +11,7 @@ api_key = os.getenv("NVIDIA_API_KEY")
 
 if not api_key:
     raise RuntimeError(
-        "NVIDIA_API_KEY is missing. Put it in C:\\SIH26142-SRM\\.env"
+        "NVIDIA_API_KEY is missing. Please set it in your environment or .env file."
     )
 
 client = OpenAI(

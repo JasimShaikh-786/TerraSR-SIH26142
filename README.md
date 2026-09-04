@@ -292,7 +292,7 @@ When presenting to evaluators, use the following chronological narrative:
 ## 📂 Repository Structure
 
 ```text
-C:\SIH26142-SRM/
+TerraSR/
 ├── agent/                         # NVIDIA Nemotron reasoning client & test harness
 │   ├── nemotron.py                # NGC OpenAI-compatible client adapter
 │   └── test_nemotron.py           # Verification script for Nemotron connection
@@ -315,9 +315,10 @@ C:\SIH26142-SRM/
 │   └── JUDGE_DEMO.md              # 2-minute oral presentation guide for judges
 ├── frontend/                      # Modern React 19 + TypeScript + Vite UI
 │   ├── src/
-│   │   ├── main.tsx               # Decompressed, typed modular UI components
+│   │   ├── main.tsx               # Modular typed UI components & stage controllers
 │   │   └── styles.css             # Earth Observation dark-theme visual styling
 │   ├── package.json               # Node dependency declarations
+│   ├── vercel.json                # Vercel frontend deployment configuration
 │   └── vite.config.ts             # Vite bundler & reverse proxy configuration
 ├── models/                        # Deep learning architectures & checkpoints
 │   ├── swinir/official/           # Cloned official SwinIR PyTorch implementation
@@ -328,6 +329,9 @@ C:\SIH26142-SRM/
 │   └── smoke_test.py              # Automated 13-endpoint API smoke test
 ├── .env.example                   # Safe template for optional live credentials
 ├── .gitignore                     # Git exclusion rules (safeguarding models & secrets)
+├── Procfile                       # Process configuration for cloud deployment
+├── railway.toml                   # Railway backend service specification
+├── nixpacks.toml                  # Nixpacks container build definition
 ├── check_environment.bat          # Diagnostic script checking Node, Python, and CUDA
 ├── run.bat                        # One-click startup for backend and frontend
 ├── setup.bat                      # One-click environment provisioning
