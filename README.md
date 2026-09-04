@@ -18,6 +18,28 @@
 
 ---
 
+## 🚀 Live Demo
+
+<p align="center">
+  <a href="https://sih26142-srm.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/▶_Launch_TerraSR-sih26142--srm.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Launch TerraSR">
+  </a>
+  &nbsp;
+  <a href="https://terrasr-backend-production.up.railway.app/api/health" target="_blank">
+    <img src="https://img.shields.io/badge/API_Health-railway.app-8B5CF6?style=for-the-badge&logo=railway&logoColor=white" alt="API Health">
+  </a>
+</p>
+
+| Component | URL |
+|-----------|-----|
+| 🖥️ **Frontend** | https://sih26142-srm.vercel.app/ |
+| ⚙️ **Backend API** | https://terrasr-backend-production.up.railway.app |
+| 🏥 **Health Check** | https://terrasr-backend-production.up.railway.app/api/health |
+
+> **For judges:** Open the frontend URL, select any scene (Urban · Agriculture · Mixed · Disaster), then step through the full pipeline: Acquire → Preprocess → SR Engine → Validate → Uncertainty → AI Analyst → Report.
+
+---
+
 <p align="center">
   <img src="docs/images/dashboard.png" alt="TerraSR Platform Dashboard" width="100%">
 </p>
