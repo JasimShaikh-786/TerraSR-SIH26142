@@ -1,4 +1,4 @@
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -22,11 +22,12 @@ npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 
-# Build/cache
+# Build / cache
 dist/
 build/
 .cache/
 .npm-cache/
+frontend/.npm-cache/
 
 # IDE
 .vscode/
@@ -37,7 +38,6 @@ build/
 Thumbs.db
 
 # Python tooling
-.pytest_cache/
 .coverage
 htmlcov/
 
@@ -49,12 +49,13 @@ htmlcov/
 *.onnx
 *.bin
 
-# Large datasets
+# Large datasets & archives
 *.zip
 *.tar
 *.tar.gz
 *.7z
 *.parquet
+SIH26142_SRM_JUDGE_READY_PROTOTYPE.zip
 
 # Runtime outputs
 outputs/*
