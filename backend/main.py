@@ -1,4 +1,4 @@
-"""TerraSR offline-first prototype API with one shared scene manifest."""
+﻿"""TerraSR offline-first prototype API with one shared scene manifest."""
 from __future__ import annotations
 import base64, json, os
 from pathlib import Path
@@ -12,7 +12,21 @@ from pydantic import BaseModel
 ROOT=Path(__file__).resolve().parents[1]; DEMO=ROOT/"demo_data"
 SCENES:list[dict[str,Any]]=json.loads((DEMO/"scenes.json").read_text(encoding="utf-8")); BY_ID={s["id"]:s for s in SCENES}
 app=FastAPI(title="TerraSR Prototype",version="0.2.0")
-app.add_middleware(CORSMiddleware,allow_origins=["http://localhost:5173"],allow_methods=["*"],allow_headers=["*"])
+
+# ── CORS: read allowed origins from env so both local dev and Vercel prod work
+_raw_origins = os.getenv("FRONTEND_ORIGIN","http://localhost:5173")
+ALLOWED_ORIGINS = [o.strip().rstrip("/") for o in _raw_origins.split(",") if o.strip()]
+# Always include localhost for dev
+if "http://localhost:5173" not in ALLOWED_ORIGINS:
+    ALLOWED_ORIGINS.append("http://localhost:5173")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class Request(BaseModel): scene_id:str="urban"; prompt:str="Analyze Scene"
 def scene(id:str)->dict[str,Any]: return BY_ID.get(id,BY_ID["urban"])
 def uri(name:str)->str: return "data:image/png;base64,"+base64.b64encode((DEMO/name).read_bytes()).decode()

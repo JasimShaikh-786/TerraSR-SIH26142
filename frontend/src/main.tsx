@@ -18,16 +18,22 @@ type Page =
   | 'About';
 
 // ─── API helper ──────────────────────────────────────────────────────────────
+// In dev: VITE_API_BASE_URL is empty → Vite proxy routes /api → localhost:8000
+// In prod: VITE_API_BASE_URL is the Railway URL → calls go directly to Railway
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
+
 const api = async (path: string, body: Any = {}): Promise<Any> => {
   const isGet = path === '/health';
-  const r = await fetch('/api' + path, {
+  const url = API_BASE ? `${API_BASE}/api${path}` : `/api${path}`;
+  const r = await fetch(url, {
     method: isGet ? 'GET' : 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: isGet ? undefined : JSON.stringify(body),
   });
-  if (!r.ok) throw new Error('Local API unavailable');
+  if (!r.ok) throw new Error('API unavailable');
   return r.json();
 };
+
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const NAV_PAGES: Page[] = [

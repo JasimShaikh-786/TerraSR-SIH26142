@@ -1,0 +1,7 @@
+﻿# NIXPACKS: build from repo root
+# Install only backend deps
+[phases.install]
+cmds = ["pip install -r backend/requirements.txt"]
+
+[start]
+cmd = "uvicorn backend.main:app --host 0.0.0.0 --port $PORT"
