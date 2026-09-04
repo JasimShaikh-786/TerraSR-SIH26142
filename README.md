@@ -261,34 +261,6 @@ NVIDIA_API_KEY=your_nvidia_ngc_api_key
 
 ---
 
-## ⏱️ Recommended Judge Demo Workflow (60 Seconds)
-
-When presenting to evaluators, use the following chronological narrative:
-
-```text
-[01 ACQUIRE]     Select a demonstration scene (e.g., Bengaluru Urban Edge).
-       ↓
-[02 QUALITY]     Inspect SCL cloud masking, shadow verification, and metadata integrity.
-       ↓
-[03 PREPROCESS]  Demonstrate B02, B03, B04, B08 band alignment and radiometric scaling.
-       ↓
-[04 RECONSTRUCT] Use the interactive split-slider to compare 10 m observed vs. Sub-4 m reconstructed target.
-       ↓
-[05 VALIDATE]    Examine spatial fidelity (PSNR/SSIM) and spectral preservation (SAM/ERGAS).
-       ↓
-[06 UNCERTAINTY] Show spatial confidence heatmaps—proving we do not fabricate truth.
-       ↓
-[07 ANALYZE]     Demonstrate precision agriculture NDVI and urban feature extraction.
-       ↓
-[08 EXPLAIN]     Engage NVIDIA Nemotron 3 Ultra for multi-turn scientific reasoning.
-       ↓
-[09 REPORT]      Export a complete executive intelligence briefing in JSON or CSV.
-```
-
-> **Pro Tip**: Click the prominent **JUDGE MODE** button in the header navigation to trigger an automated ~48-second self-guided demonstration of this exact sequence.
-
----
-
 ## 📂 Repository Structure
 
 ```text
