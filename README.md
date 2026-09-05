@@ -350,15 +350,68 @@ Phase 7: Autonomous Nemotron Agent Tool Calling [PLANNED]
 
 ---
 
+## 🔬 Research Direction & Model Selection
+
+### Why SwinIR?
+
+SwinIR (Liang et al., ICCVW 2021) extends the Swin Transformer architecture to low-level vision tasks. Key advantages for multispectral satellite SR:
+
+- **Shifted-window self-attention** enables long-range spatial dependency modelling without the global attention cost — $O(HW)$ vs. $O(H^2W^2)$.
+- **Residual Swin Transformer Blocks (RSTB)** combine transformer layers with identity skip connections, enabling stable training at depth.
+- **Parameter efficiency**: SwinIR achieves SOTA SR quality while using up to 67% fewer parameters than comparable CNN-based models.
+- **4-band adaptation**: The baseline SwinIR architecture (RGB input) is extended to a 4-channel input tensor `[B, 4, H, W]` for simultaneous B02/B03/B04/B08 reconstruction.
+
+### CNN Baseline: RCAN
+
+**RCAN** (Residual Channel Attention Network, Zhang et al. ECCV 2018) will be trained and evaluated as a CNN baseline alongside SwinIR using the identical dataset, preprocessing, and validation protocol.
+
+- **Residual-in-Residual (RIR)** structure allows training of very deep networks.
+- **Channel attention** dynamically re-weights spectral channels, which is particularly relevant for multispectral imagery where different bands carry different spatial-information content.
+- Provides a principled comparison: transformer-based (SwinIR) vs. CNN-based (RCAN) super-resolution for Sentinel-2 data.
+
+### Sensor-Aware Degradation
+
+Following DSen2 (Lanaras et al., ISPRS Journal 2018), our degradation model is designed to reflect the Sentinel-2 sensor modulation transfer function (MTF) rather than using generic bicubic downsampling. Training on synthetically degraded real Sentinel-2 imagery provides virtually unlimited paired LR/HR data without requiring co-registered commercial HR imagery for training.
+
+> SR cannot create information that was never in the acquisition. A 10 m pixel observing a spectral mixture cannot be decomposed without learned priors or multi-temporal information. SR reconstructs *plausible* spatial detail consistent with the spectral signal — not ground truth.
+
+### Multi-Frame Sentinel-2 SR
+
+Single-frame SR (this prototype) reconstructs from one acquisition. Multi-frame SR (MFSR), as demonstrated in the WorldStrat dataset (NeurIPS 2022 Datasets Track), exploits sub-pixel shifts between multiple temporally close acquisitions to recover additional spatial information. This is a planned extension of TerraSR — especially applicable to Sentinel-2's 5-day revisit cycle.
+
+### QA / Reliability Criteria
+
+Beyond PSNR/SSIM, production SR evaluation should assess:
+- **Hallucination rate**: generation of spectral or structural artefacts absent from the true scene.
+- **Semantic consistency**: SR-derived land-cover classifications compared to reference HR-based classifications.
+- **Registration error**: sub-pixel spatial shift between SR output and co-registered HR reference.
+- **Application-task metrics**: NDVI correlation, road F1-score, building IoU.
+
+---
+
 ## 👥 Acknowledgments & Credits
 
 - **Problem Statement**: SIH 2026 • SIH26142
 - **Organization**: National Technical Research Organisation (NTRO)
 - **Data Source**: European Space Agency (ESA) Copernicus Sentinel-2 Open Access Data
 - **Reference Architectures**:
-  - *SwinIR: Image Restoration Using Swin Transformer* (Liang et al.)
-  - *WorldStrat Dataset: High-Resolution Satellite Super-Resolution Benchmark* (Donike et al.)
+  - *SwinIR: Image Restoration Using Swin Transformer* (Liang et al., ICCVW 2021) — [arXiv:2108.10257](https://arxiv.org/abs/2108.10257)
+  - *WorldStrat Dataset: High-Resolution Satellite Super-Resolution Benchmark* (NeurIPS 2022) — [arXiv:2207.06418](https://arxiv.org/abs/2207.06418)
+  - *Image Super-Resolution Using Very Deep Residual Channel Attention Networks — RCAN* (Zhang et al., ECCV 2018) — [arXiv:1807.02758](https://arxiv.org/abs/1807.02758)
+  - *Super-resolution of Sentinel-2 images: DSen2* (Lanaras et al., ISPRS 2018)
   - *NVIDIA Nemotron 3 Ultra Foundation Models* (NVIDIA NGC)
+
+---
+
+## 📚 References
+
+| Reference | Relevance |
+|-----------|-----------|
+| Liang et al. (2021). *SwinIR: Image Restoration Using Swin Transformer.* ICCVW. [arXiv:2108.10257](https://arxiv.org/abs/2108.10257) | Primary SR backbone |
+| Zhang et al. (2018). *Image Super-Resolution Using Very Deep Residual Channel Attention Networks.* ECCV. [arXiv:1807.02758](https://arxiv.org/abs/1807.02758) | CNN baseline (RCAN) |
+| Lanaras et al. (2018). *Super-resolution of Sentinel-2 images: Learning a globally applicable deep neural network.* ISPRS Journal of Photogrammetry and Remote Sensing, 146, 305–319. | Sensor-aware degradation model for Sentinel-2 |
+| Cornebise et al. (2022). *Open High-Resolution Satellite Imagery: The WorldStrat Dataset.* NeurIPS Datasets & Benchmarks. [arXiv:2207.06418](https://arxiv.org/abs/2207.06418) | Multi-frame SR benchmark, validation protocol |
+| ESA Copernicus. *Sentinel-2 User Handbook.* | Sensor specifications, band definitions, L2A product |
 
 ---
 

@@ -409,11 +409,18 @@ function SR({
         </Panel>
         <Panel>
           <span className="label">MODEL PIPELINE</span>
-          <p>B02/B03/B04/B08 → Feature extraction → Swin Transformer blocks → Deep feature reconstruction → Upsampling → SR output</p>
-          <p style={{ marginTop: 10 }}>
-            <b>SwinIR</b> is the super-resolution engine.&nbsp;
-            <b>Nemotron</b> is the reasoning and orchestration layer.
+          <p>
+            B02/B03/B04/B08 → Shallow feature extraction → Residual Swin Transformer Blocks (RSTB) →
+            Deep feature reconstruction → Pixel-shuffle upsampling → Sub-4 m SR output
           </p>
+          <p style={{ marginTop: 10 }}>
+            <b>SwinIR</b> uses shifted-window self-attention within each RSTB for long-range spatial dependency modelling.&nbsp;
+            <b>RCAN</b> (Residual Channel Attention Network) is the planned CNN baseline evaluation.&nbsp;
+            <b>Nemotron</b> is the EO reasoning and orchestration layer — separate from image reconstruction.
+          </p>
+          {data.baseline_note && (
+            <p style={{ marginTop: 8, fontSize: 12, color: '#8fb0b8' }}>{data.baseline_note}</p>
+          )}
         </Panel>
       </section>
     </>
@@ -571,11 +578,11 @@ function Analyst({
     <>
       <Head
         eyebrow="08 / EXPLAIN"
-        title="TerraSR AI Analyst"
-        subtitle="NVIDIA Nemotron 3 Ultra · Reasoning and orchestration layer"
+        title="TerraSR EO Analyst"
+        subtitle="NVIDIA Nemotron 3 Ultra · Earth Observation reasoning and orchestration layer"
       />
       <section className="context">
-        {['SCENE', 'PROCESSING', 'SR', 'VALIDATION', 'UNCERTAINTY', 'APPLICATION'].map(x => (
+        {['Scene Context', 'Observation Quality', 'SR Notes', 'Spectral', 'Uncertainty', 'Findings'].map(x => (
           <Badge key={x}>{x}</Badge>
         ))}
       </section>
@@ -583,9 +590,15 @@ function Analyst({
       <Panel className="analyst">
         <Badge>{data.mode || 'DEMO ANALYST'}</Badge>
         <h2>{data.model || 'NVIDIA Nemotron 3 Ultra'}</h2>
-        <p>{data.response || 'Loading selected-scene analysis…'}</p>
+        <p style={{ whiteSpace: 'pre-wrap' }}>{data.response || 'Select an action to generate a structured scene analysis.'}</p>
         <div className="actiongrid">
-          {['Analyze Scene', 'Explain Validation', 'Explain Uncertainty', 'Recommend Application', 'Generate Report'].map(x => (
+          {[
+            'Analyze Scene',
+            'Explain Spectral Quality',
+            'Explain Uncertainty',
+            'Recommend Application',
+            'Generate Report',
+          ].map(x => (
             <button key={x} className="minor" onClick={() => ask(x)}>{x}</button>
           ))}
           <button className="primary" onClick={() => go('Report')}>VIEW SCENE REPORT</button>
@@ -595,30 +608,31 @@ function Analyst({
       <section className="roles">
         <Panel>
           <span className="label">SWINIR</span>
-          <h3>Image reconstruction</h3>
-          <p>Spatial super-resolution of multispectral Sentinel-2 bands.</p>
+          <h3>Spatial super-resolution</h3>
+          <p>Residual Swin Transformer Blocks reconstruct fine-scale spatial detail from multispectral Sentinel-2 input.</p>
         </Panel>
         <Panel>
           <span className="label">NEMOTRON</span>
-          <h3>Reasoning + orchestration + explanation</h3>
-          <p>Interprets pipeline outputs, explains validation and uncertainty, generates reports.</p>
+          <h3>EO reasoning · orchestration · reporting</h3>
+          <p>Interprets pipeline outputs using structured EO-analyst framing — scene context, spectral quality, uncertainty types, and actionable recommendations.</p>
         </Panel>
       </section>
     </>
   );
 }
 
+
 // ─── Page: Architecture ───────────────────────────────────────────────────────
 const ARCH_NODES = [
-  { top: 'DATA SOURCE',    body: 'Copernicus\nSentinel-2 L2A' },
-  { top: 'PREPROCESSING', body: 'Cloud mask\nAlignment\nNormalization' },
-  { top: 'MULTISPECTRAL', body: 'B02 · B03\nB04 · B08' },
-  { top: 'SWINIR',        body: 'Spatial\nreconstruction' },
-  { top: 'SR PRODUCT',    body: 'Sub-4 m\nreconstructed target' },
+  { top: 'DATA SOURCE',    body: 'Copernicus\nSentinel-2 L2A\n10 m GSD' },
+  { top: 'PREPROCESSING', body: 'SCL cloud mask\nBand alignment\nReflectance norm.' },
+  { top: 'MULTISPECTRAL', body: 'B02 · B03\nB04 · B08\n[B, 4, H, W] tensor' },
+  { top: 'SWINIR',        body: 'RSTB blocks\nShifted-window\nattention' },
+  { top: 'SR PRODUCT',    body: 'Sub-4 m\nreconstructed\ntarget' },
   { top: 'VALIDATION',    body: 'PSNR / SSIM\nSAM / ERGAS / RMSE' },
-  { top: 'UNCERTAINTY',   body: 'Reliability\nmap' },
+  { top: 'UNCERTAINTY',   body: 'Aleatoric\nEpistemic\nreliability map' },
   { top: 'APPLICATIONS',  body: 'Agriculture\nUrban · Disaster' },
-  { top: 'NEMOTRON',      body: 'Reasoning\norchestration\nreporting' },
+  { top: 'NEMOTRON',      body: 'EO reasoning\norchestration\nreporting' },
 ];
 
 function Architecture() {
@@ -627,7 +641,7 @@ function Architecture() {
       <Head
         eyebrow="SYSTEM OVERVIEW"
         title="TerraSR Architecture"
-        subtitle="A simple, explainable route from observed satellite input to AI-assisted interpretation."
+        subtitle="Sentinel-2 L2A → Multispectral SwinIR SR → Validation → Uncertainty → EO Applications"
       />
       <section className="architecture">
         {ARCH_NODES.map(n => (
@@ -639,19 +653,33 @@ function Architecture() {
       </section>
       <section className="roles" style={{ marginTop: 20 }}>
         <Panel>
-          <span className="label">SWINIR</span>
-          <h3>Image reconstruction</h3>
-          <p>Takes 10 m multispectral input and outputs a sub-4 m reconstructed target.</p>
+          <span className="label">SWINIR · PRIMARY SR ENGINE</span>
+          <h3>Spatial super-resolution via Residual Swin Transformer Blocks</h3>
+          <p>
+            Takes a 4-band multispectral input tensor [B, 4, H, W] (B02/B03/B04/B08) and reconstructs a sub-4 m target.
+            Shifted-window self-attention captures long-range spatial dependencies with linear computational complexity.
+            Reference: Liang et al., <em>SwinIR: Image Restoration Using Swin Transformer</em>, ICCVW 2021.
+          </p>
         </Panel>
         <Panel>
-          <span className="label">NEMOTRON</span>
-          <h3>Reasoning · orchestration · reporting</h3>
-          <p>Interprets all pipeline outputs. Does NOT perform image super-resolution.</p>
+          <span className="label">RCAN · CNN BASELINE</span>
+          <h3>Residual Channel Attention Network — planned evaluation</h3>
+          <p>
+            RCAN (Zhang et al., ECCV 2018) uses Residual-in-Residual structure with channel attention.
+            It will be evaluated as the CNN baseline against SwinIR on the same dataset, preprocessing,
+            and validation protocol (PSNR / SSIM / SAM / ERGAS).
+          </p>
+        </Panel>
+        <Panel>
+          <span className="label">NEMOTRON · REASONING LAYER</span>
+          <h3>EO reasoning · orchestration · reporting</h3>
+          <p>Interprets all pipeline outputs. Structures analysis as: scene context, observation quality, SR product notes, spectral considerations, uncertainty (aleatoric vs. epistemic), key finding, and recommended action. Does NOT perform image super-resolution.</p>
         </Panel>
       </section>
     </>
   );
 }
+
 
 // ─── Page: Report ─────────────────────────────────────────────────────────────
 function Report({
@@ -677,17 +705,21 @@ function Report({
 // ─── Page: About ─────────────────────────────────────────────────────────────
 function About() {
   const items: [string, string][] = [
-    ['Problem',             'Satellite imagery needs carefully explained fine-scale interpretation beyond 10 m observations.'],
-    ['Proposed Solution',   'Quality-aware multispectral reconstruction with validation, uncertainty and AI-assisted explanation.'],
-    ['Innovation',          'One coherent selected-scene workflow that keeps reconstruction distinct from direct observation.'],
-    ['Technology',          'FastAPI, React, Sentinel-2 L2A B02/B03/B04/B08, SwinIR integration point and NVIDIA Nemotron adapter.'],
-    ['Dataset Strategy',    'Deterministic, source-aligned offline demo scenes; optional Copernicus configuration remains backend-only.'],
-    ['Prototype Status',    'PROTOTYPE — deterministic enhancement, not trained model inference.'],
-    ['Production Roadmap',  'Paired HR/LR data → multispectral SwinIR training → benchmark evaluation → real uncertainty → live Copernicus → production Nemotron orchestration.'],
+    ['Problem Statement',   'SIH 2026 · SIH26142 · NTRO: Deep Learning Based Super Resolution Mapping (SRM) from medium-resolution satellite imagery.'],
+    ['Approach',            'Quality-aware multispectral preprocessing → Multispectral SwinIR reconstruction → Spatial / spectral validation → Uncertainty quantification → Downstream EO applications.'],
+    ['Why SwinIR',          'Residual Swin Transformer Blocks (RSTB) capture long-range spatial dependencies via shifted-window self-attention — superior to CNN-only approaches for texture-rich EO scenes while reducing parameter count by up to 67% versus deeper CNNs (Liang et al., ICCVW 2021).'],
+    ['CNN Baseline',        'RCAN (Residual Channel Attention Network, Zhang et al. ECCV 2018) will be trained and evaluated alongside SwinIR on the same multispectral dataset and validation protocol. Channel attention allows the network to selectively weight informative spectral bands.'],
+    ['Sensor-Aware Design', 'Degradation model follows the Sentinel-2 sensor modulation transfer function (MTF). Training on synthetic downscaled HR imagery (similar to DSen2, Lanaras et al. 2018 ISPRS) avoids the need for unavailable paired HR/LR ground truth.'],
+    ['Bands',               'B02 (Blue 490 nm) · B03 (Green 560 nm) · B04 (Red 665 nm) · B08 (NIR 842 nm) — all native 10 m Sentinel-2 L2A bands. Tensor input: [B, 4, H, W].'],
+    ['Validation Protocol', 'PSNR (spatial), SSIM (structural), RMSE (error), SAM (spectral-angle), ERGAS (global spectral error). Production validation requires co-registered SPOT-6/7 or equivalent 1.5 m reference imagery.'],
+    ['Uncertainty',         'Aleatoric (observation noise, mixed pixels) and epistemic (model limitations) uncertainty. Production plan: Monte Carlo ensemble variance or stochastic test-time dropout.'],
+    ['Prototype Status',    'PROTOTYPE — deterministic Lanczos + edge enhancement. Trained SwinIR inference is the production integration target.'],
+    ['Technology',          'FastAPI · React 19 · Vite · Sentinel-2 L2A (ESA Copernicus) · SwinIR / RCAN · NVIDIA Nemotron 3 Ultra.'],
+    ['Production Roadmap',  'Paired HR/LR dataset → Multispectral SwinIR + RCAN training → Benchmark evaluation → Bayesian uncertainty → Live Copernicus API → Autonomous Nemotron tool calling.'],
   ];
   return (
     <>
-      <Head eyebrow="ABOUT" title="TerraSR" subtitle="Multispectral Earth Observation Super-Resolution Platform" />
+      <Head eyebrow="ABOUT" title="TerraSR" subtitle="Multispectral Earth Observation Super-Resolution · SIH 2026 · SIH26142" />
       <section className="about">
         {items.map(([k, v]) => (
           <Panel key={k}>
@@ -833,7 +865,7 @@ function App() {
 
       {/* ── Footer ── */}
       <footer>
-        <span>AI-assisted spatial reconstruction for Earth observation</span>
+        <span>Multispectral Earth Observation Super-Resolution · SIH 2026 · SIH26142</span>
         <button onClick={() => setNotes(true)}>Presenter notes</button>
         <button onClick={() => setPage('About')}>About TerraSR</button>
         <span>Prototype for SIH 2026 • NTRO Problem Statement SIH26142</span>
